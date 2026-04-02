@@ -1,341 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mohammed Saqib — SDET Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mohammed Saqib — Software Tester & QA Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --bark:     #0d0f08;
-    --soil:     #161a0e;
-    --moss:     #1e2d14;
-    --fern:     #2e4a1e;
-    --sage:     #5a7d3e;
-    --leaf:     #7ab54e;
-    --dew:      #a8d47a;
-    --mist:     #c8e8a0;
-    --canopy:   #e0f0c4;
-    --sunlight: #f2eed8;
-    --gold:     #d4a82a;
-    --mushroom: #8a6a48;
-    --fog:      rgba(168,212,122,0.06);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bark);
-    color: var(--canopy);
-    font-family: 'Lora', Georgia, serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
+:root {
+  --bg:      #060a05;
+  --s1:      #0c120b;
+  --s2:      #131c11;
+  --border:  #1e2b1c;
+  --border2: #2a3d27;
+  --leaf:    #6db84a;
+  --dew:     #9ed47a;
+  --muted:   #6b7d64;
+  --text:    #ddebd4;
+  --bright:  #f0f7e8;
+  --gold:    #c4952a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none}
 
-  /* CURSOR */
-  #cursor {
-    position: fixed; width: 12px; height: 12px;
-    background: var(--leaf); border-radius: 50%;
-    pointer-events: none; z-index: 9999;
-    transform: translate(-50%,-50%);
-    transition: width 0.15s, height 0.15s, background 0.2s;
-    mix-blend-mode: screen;
-  }
-  #cursor-trail {
-    position: fixed; width: 32px; height: 32px;
-    border: 1px solid var(--sage); border-radius: 50%;
-    pointer-events: none; z-index: 9998;
-    transform: translate(-50%,-50%);
-    transition: left 0.12s ease, top 0.12s ease;
-    opacity: 0.45;
-  }
+/* ── CURSOR ── */
+#cur{position:fixed;top:0;left:0;pointer-events:none;z-index:9999}
+#cur-dot{width:7px;height:7px;background:var(--leaf);border-radius:50%;position:absolute;transform:translate(-50%,-50%)}
+#cur-ring{width:32px;height:32px;border:1px solid var(--leaf);border-radius:50%;position:absolute;transform:translate(-50%,-50%);transition:all .18s cubic-bezier(.25,.46,.45,.94);opacity:.45}
+.cursor-big #cur-ring{width:52px;height:52px;opacity:.7;background:rgba(109,184,74,.05)}
 
-  /* CANVAS */
-  #forest-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+/* ── CANVAS ── */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-  /* GRAIN */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.06'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 1; opacity: 0.5;
-  }
+/* ── GRAIN ── */
+body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-size:256px 256px;opacity:.4}
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.2rem 4rem;
-    background: linear-gradient(to bottom, rgba(13,15,8,0.97), rgba(13,15,8,0.5) 70%, transparent);
-    backdrop-filter: blur(6px);
-  }
-  .nav-logo {
-    font-family: 'Playfair Display', serif; font-size: 1.05rem;
-    font-style: italic; color: var(--dew); letter-spacing: 0.04em; text-decoration: none;
-  }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    font-family: 'DM Mono', monospace; font-size: 0.7rem;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--sage); text-decoration: none; transition: color 0.25s; position: relative;
-  }
-  .nav-links a::after {
-    content: ''; position: absolute; bottom: -3px; left: 0;
-    width: 0; height: 1px; background: var(--leaf); transition: width 0.25s;
-  }
-  .nav-links a:hover { color: var(--dew); }
-  .nav-links a:hover::after { width: 100%; }
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 3.5rem;
+  transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(6,10,5,.9);border-color:var(--border);backdrop-filter:blur(14px)}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--bright);text-decoration:none;letter-spacing:-.02em}
+.nav-logo span{color:var(--leaf)}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;position:relative}
+.nav-links a:hover{color:var(--bright)}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--leaf);transition:width .25s}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.5rem 1.3rem;border:1px solid var(--border2);color:var(--dew);text-decoration:none;letter-spacing:.08em;transition:border-color .2s,color .2s,background .2s}
+.nav-cta:hover{border-color:var(--leaf);color:var(--bright);background:rgba(109,184,74,.06)}
 
-  section { position: relative; z-index: 2; }
+/* ── HERO ── */
+#hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:9rem 3.5rem 5rem;overflow:hidden}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--leaf);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.6rem;display:flex;align-items:center;gap:.8rem;opacity:0;animation:fadeUp .7s .2s forwards}
+.hero-eyebrow::before{content:'';width:36px;height:1px;background:var(--leaf);flex-shrink:0}
+.hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3.2rem,8.5vw,7.5rem);line-height:.9;letter-spacing:-.04em;margin-bottom:1.2rem;opacity:0;animation:fadeUp .8s .38s forwards;color:var(--bright)}
+.hero-name .ghost{display:block;color:transparent;-webkit-text-stroke:1px rgba(221,235,212,.15)}
+.hero-name .accent{color:var(--leaf)}
+.hero-role{font-family:'JetBrains Mono',monospace;font-size:clamp(.8rem,1.6vw,1rem);color:var(--muted);margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .54s forwards;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.role-tag{background:var(--s2);border:1px solid var(--border2);color:var(--dew);padding:.22rem .7rem;font-size:.68rem;letter-spacing:.05em}
+.hero-desc{max-width:500px;font-size:1.02rem;line-height:1.78;color:var(--muted);margin-bottom:3rem;opacity:0;animation:fadeUp .8s .68s forwards}
+.hero-desc strong{color:var(--text)}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .82s forwards}
+.btn-fill{display:inline-flex;align-items:center;gap:.5rem;background:var(--leaf);color:var(--bg);font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:500;padding:.82rem 2rem;text-decoration:none;letter-spacing:.05em;transition:all .25s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
+.btn-fill:hover{background:var(--dew);box-shadow:0 0 30px rgba(109,184,74,.35);transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--border2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.76rem;padding:.82rem 2rem;text-decoration:none;letter-spacing:.05em;transition:all .25s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
+.btn-ghost:hover{border-color:var(--leaf);color:var(--leaf);background:rgba(109,184,74,.04);transform:translateY(-2px)}
+.hero-side{position:absolute;right:3.5rem;bottom:5rem;display:flex;flex-direction:column;gap:2.2rem;opacity:0;animation:fadeIn 1s 1.1s forwards}
+.stat-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--bright);line-height:1;text-align:right}
+.stat-num em{color:var(--leaf);font-style:normal}
+.stat-lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;text-align:right}
+.scroll-hint{position:absolute;bottom:2.5rem;left:3.5rem;display:flex;align-items:center;gap:.8rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;opacity:0;animation:fadeIn 1s 1.4s forwards}
+.sh-line{width:44px;height:1px;background:linear-gradient(90deg,var(--leaf),transparent);animation:shAnim 2s ease-in-out infinite}
+@keyframes shAnim{0%,100%{transform:scaleX(1);transform-origin:left}50%{transform:scaleX(.3);transform-origin:right}}
 
-  /* HERO */
-  #hero {
-    min-height: 100vh; display: flex; flex-direction: column;
-    justify-content: center; padding: 0 6rem; overflow: hidden;
-  }
-  .hero-eyebrow {
-    font-family: 'DM Mono', monospace; font-size: 0.72rem;
-    letter-spacing: 0.24em; text-transform: uppercase; color: var(--sage);
-    margin-bottom: 1.4rem; opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
-  }
-  .hero-name {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 7vw, 7rem); font-weight: 700;
-    line-height: 1.0; color: var(--sunlight); margin-bottom: 0.6rem;
-    opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
-  }
-  .hero-name span { color: var(--leaf); font-style: italic; }
-  .hero-title {
-    font-family: 'DM Mono', monospace;
-    font-size: clamp(0.85rem, 1.8vw, 1.2rem); color: var(--mushroom);
-    letter-spacing: 0.1em; margin-bottom: 2rem;
-    opacity: 0; animation: fadeUp 0.9s 0.7s forwards;
-  }
-  .hero-bio {
-    max-width: 540px; font-size: 1.02rem; line-height: 1.9;
-    color: var(--mist); margin-bottom: 2.8rem;
-    opacity: 0; animation: fadeUp 0.9s 0.9s forwards;
-  }
-  .hero-cta {
-    display: flex; gap: 1.2rem;
-    opacity: 0; animation: fadeUp 0.9s 1.1s forwards;
-  }
+/* ── TICKER ── */
+.ticker-wrap{position:relative;z-index:2;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--s1);padding:.7rem 0;overflow:hidden}
+.ticker{display:flex;animation:ticker 35s linear infinite;white-space:nowrap}
+.ticker-item{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);padding:0 2.5rem;display:flex;align-items:center;gap:.6rem}
+.ticker-dot{width:4px;height:4px;background:var(--leaf);border-radius:50%;flex-shrink:0}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-  /* BUTTONS */
-  .btn-primary {
-    display: inline-flex; align-items: center;
-    padding: 0.9rem 2.2rem; background: var(--fern); color: var(--dew);
-    border: none; font-family: 'DM Mono', monospace; font-size: 0.76rem;
-    letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
-    cursor: pointer; position: relative; z-index: 10;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    transition: background 0.3s, transform 0.2s, box-shadow 0.3s, color 0.2s;
-  }
-  .btn-primary:hover {
-    background: var(--sage); color: var(--sunlight);
-    transform: translateY(-3px); box-shadow: 0 10px 30px rgba(90,125,62,0.35);
-  }
-  .btn-secondary {
-    display: inline-flex; align-items: center;
-    padding: 0.9rem 2.2rem; background: transparent; color: var(--sage);
-    border: 1px solid var(--fern); font-family: 'DM Mono', monospace;
-    font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase;
-    text-decoration: none; cursor: pointer; position: relative; z-index: 10;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    transition: border-color 0.3s, color 0.3s, transform 0.2s, background 0.3s;
-  }
-  .btn-secondary:hover {
-    border-color: var(--leaf); color: var(--leaf);
-    background: rgba(46,74,30,0.2); transform: translateY(-3px);
-  }
+/* ── SECTIONS ── */
+section{position:relative;z-index:2;padding:7rem 3.5rem;max-width:1240px;margin:0 auto}
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--leaf);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);max-width:80px}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,4.5vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.06;margin-bottom:1.2rem;color:var(--bright)}
+.sec-title em{font-style:normal;color:var(--leaf)}
+.sec-sub{max-width:560px;font-size:.95rem;line-height:1.75;color:var(--muted);margin-bottom:4rem}
 
-  .hero-scroll-hint {
-    position: absolute; bottom: 2.5rem; left: 6rem;
-    font-family: 'DM Mono', monospace; font-size: 0.62rem;
-    letter-spacing: 0.2em; color: var(--fern);
-    display: flex; align-items: center; gap: 0.8rem;
-    opacity: 0; animation: fadeUp 1s 1.5s forwards;
-  }
-  .scroll-line {
-    width: 44px; height: 1px; background: var(--fern);
-    position: relative; overflow: hidden;
-  }
-  .scroll-line::after {
-    content: ''; position: absolute; top: 0; left: -100%;
-    width: 100%; height: 100%; background: var(--leaf);
-    animation: slideRight 2.2s infinite 2s;
-  }
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.08s}.rd2{transition-delay:.16s}.rd3{transition-delay:.24s}.rd4{transition-delay:.32s}
 
-  /* SECTION DIVIDER */
-  .section-divider { display: flex; align-items: center; gap: 1rem; margin-bottom: 3.5rem; }
-  .divider-label {
-    font-family: 'DM Mono', monospace; font-size: 0.66rem;
-    letter-spacing: 0.24em; text-transform: uppercase; color: var(--sage); white-space: nowrap;
-  }
-  .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--fern), transparent); }
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;align-items:start;margin-top:4rem}
+.about-body p{font-size:.98rem;line-height:1.85;color:var(--muted);margin-bottom:1.1rem}
+.about-body p strong{color:var(--text)}
+.about-body p a{color:var(--leaf);text-decoration:none}
+.info-card{background:var(--s1);border:1px solid var(--border);padding:2rem;position:relative;overflow:hidden}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--leaf),transparent)}
+.info-card-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--leaf);letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.4rem}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:.72rem 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border-bottom:none}
+.info-key{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.06em}
+.info-val{font-size:.88rem;color:var(--text)}
+.badge{background:rgba(109,184,74,.1);color:var(--leaf);border:1px solid rgba(109,184,74,.25);font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:.15rem .5rem;letter-spacing:.04em}
 
-  /* ABOUT */
-  #about { padding: 10rem 6rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-  .about-visual { position: relative; height: 400px; }
-  .about-card {
-    position: absolute; padding: 1.8rem; width: 210px;
-    background: linear-gradient(135deg, var(--soil), var(--moss));
-    border: 1px solid rgba(46,74,30,0.6);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4); transition: transform 0.4s;
-  }
-  .about-card:hover { transform: rotate(0deg) scale(1.05) !important; z-index: 10; }
-  .about-card:nth-child(1) { top: 0; left: 0; transform: rotate(-3.5deg); }
-  .about-card:nth-child(2) { top: 90px; left: 105px; transform: rotate(2.5deg); z-index: 2; }
-  .about-card:nth-child(3) { top: 210px; left: 20px; transform: rotate(-1.5deg); }
-  .about-card-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.2em; color: var(--sage); text-transform: uppercase; margin-bottom: 0.45rem; }
-  .about-card-value { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--dew); }
-  .about-card-sub { font-size: 0.76rem; color: var(--mushroom); margin-top: 0.35rem; line-height: 1.55; }
-  .about-text h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--sunlight); margin-bottom: 1.5rem; line-height: 1.2; }
-  .about-text h2 em { color: var(--leaf); font-style: italic; }
-  .about-text p { font-size: 0.96rem; line-height: 1.9; color: var(--mist); margin-bottom: 1.2rem; }
+/* ── SKILLS ── */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:4rem}
+.skill-card{background:var(--s1);border:1px solid var(--border);padding:1.8rem;position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;cursor:default}
+.skill-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(109,184,74,.07) 0%,transparent 65%);opacity:0;transition:opacity .3s}
+.skill-card:hover::before{opacity:1}
+.skill-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.35)}
+.skill-card-top{display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem}
+.skill-icon{font-size:1.5rem}
+.skill-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--bright)}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.45rem}
+.stag{font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:.22rem .58rem;background:var(--s2);border:1px solid var(--border);color:var(--muted);letter-spacing:.04em;transition:color .2s,border-color .2s}
+.stag:hover{color:var(--dew);border-color:var(--border2)}
+.skill-card.hi .stag{background:rgba(109,184,74,.07);border-color:rgba(109,184,74,.2);color:var(--leaf)}
 
-  /* SKILLS */
-  #skills { padding: 8rem 6rem; background: linear-gradient(to bottom, transparent, rgba(22,26,14,0.7), transparent); }
-  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
-  .skill-cluster {
-    background: var(--fog); border: 1px solid rgba(46,74,30,0.45); padding: 2rem;
-    position: relative; overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-  }
-  .skill-cluster::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
-    background: linear-gradient(to bottom, var(--leaf), var(--sage));
-    transform: scaleY(0); transform-origin: bottom; transition: transform 0.4s ease;
-  }
-  .skill-cluster:hover { border-color: rgba(90,125,62,0.7); transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
-  .skill-cluster:hover::before { transform: scaleY(1); }
-  .cluster-icon { font-size: 1.7rem; margin-bottom: 0.9rem; display: block; }
-  .cluster-title { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sage); margin-bottom: 1rem; }
-  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .skill-tag {
-    font-family: 'DM Mono', monospace; font-size: 0.63rem;
-    padding: 0.3rem 0.7rem; background: rgba(46,74,30,0.3);
-    border: 1px solid rgba(90,125,62,0.3); color: var(--dew);
-    letter-spacing: 0.05em; transition: background 0.2s, color 0.2s;
-  }
-  .skill-tag:hover { background: var(--fern); color: var(--sunlight); }
+/* ── PROJECTS ── */
+.projects-intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem}
+.view-all{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:.2rem;transition:color .2s,border-color .2s}
+.view-all:hover{color:var(--leaf);border-color:var(--leaf)}
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
+.p-card{background:var(--s1);border:1px solid var(--border);padding:2rem;position:relative;overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column;gap:.8rem}
+.p-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--leaf),transparent);opacity:0;transition:opacity .3s}
+.p-card:hover::after{opacity:1}
+.p-card:hover{border-color:var(--border2);transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.p-card.featured{grid-column:span 2;background:linear-gradient(135deg,rgba(109,184,74,.06) 0%,var(--s1) 55%);border-color:rgba(109,184,74,.18)}
+.p-num{font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;color:var(--border2);line-height:1;letter-spacing:-.04em}
+.p-badge{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--leaf);border:1px solid rgba(109,184,74,.4);padding:.12rem .5rem;letter-spacing:.08em;display:inline-block;margin-bottom:.3rem}
+.p-name{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--bright);line-height:1.2}
+.p-desc{font-size:.85rem;line-height:1.72;color:var(--muted);flex:1}
+.p-tech{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.2rem}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:.58rem;padding:.2rem .55rem;background:var(--s2);border:1px solid var(--border);color:var(--muted);letter-spacing:.04em}
+.ptag.hi{background:rgba(109,184,74,.08);border-color:rgba(109,184,74,.22);color:var(--leaf)}
+.p-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.4rem;padding-top:.8rem;border-top:1px solid var(--border)}
+.p-click-hint{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.08em;opacity:.6}
+.p-arrow{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--leaf);letter-spacing:.08em}
 
-  /* PROJECTS */
-  #projects { padding: 8rem 6rem; }
-  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
-  .project-card {
-    background: linear-gradient(145deg, var(--soil) 0%, var(--moss) 100%);
-    border: 1px solid rgba(46,74,30,0.4); padding: 2.2rem;
-    position: relative; overflow: hidden;
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-  }
-  .project-card::before {
-    content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px;
-    background: radial-gradient(circle at top right, rgba(122,181,78,0.08), transparent 70%);
-    pointer-events: none;
-  }
-  .project-card:hover { transform: translateY(-6px); border-color: rgba(90,125,62,0.7); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(122,181,78,0.1); }
-  .project-card.featured { grid-column: span 2; background: linear-gradient(135deg, rgba(46,74,30,0.45) 0%, var(--soil) 65%); border-color: rgba(90,125,62,0.5); }
-  .project-number { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.22em; color: var(--fern); margin-bottom: 0.8rem; }
-  .project-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--sunlight); margin-bottom: 0.8rem; line-height: 1.3; }
-  .project-desc { font-size: 0.87rem; line-height: 1.78; color: var(--mushroom); margin-bottom: 1.4rem; }
-  .project-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.4rem; }
-  .project-tag { font-family: 'DM Mono', monospace; font-size: 0.58rem; padding: 0.25rem 0.6rem; background: rgba(13,15,8,0.6); border: 1px solid rgba(46,74,30,0.6); color: var(--sage); letter-spacing: 0.06em; }
-  .project-link {
-    font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.14em;
-    color: var(--leaf); text-decoration: none; text-transform: uppercase;
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.5rem 0; border-bottom: 1px solid transparent;
-    transition: gap 0.2s, color 0.2s, border-color 0.2s;
-    cursor: pointer; position: relative; z-index: 5;
-  }
-  .project-link:hover { color: var(--dew); gap: 0.7rem; border-bottom-color: var(--sage); }
-  .project-link::after { content: '→'; }
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(6,10,5,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--s1);border:1px solid var(--border2);max-width:760px;width:100%;max-height:88vh;overflow-y:auto;position:relative;transform:translateY(20px);transition:transform .35s cubic-bezier(.25,.46,.45,.94)}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{padding:2rem 2rem 0;border-bottom:1px solid var(--border);padding-bottom:1.5rem;position:sticky;top:0;background:var(--s1);z-index:2}
+.modal-close{position:absolute;top:1.5rem;right:1.8rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);background:none;border:none;cursor:pointer;letter-spacing:.08em;transition:color .2s;padding:.3rem .6rem;border:1px solid var(--border)}
+.modal-close:hover{color:var(--bright);border-color:var(--border2)}
+.modal-badge{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--leaf);border:1px solid rgba(109,184,74,.35);padding:.12rem .5rem;letter-spacing:.08em;display:inline-block;margin-bottom:.7rem}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--bright);letter-spacing:-.03em;line-height:1.15;margin-bottom:.8rem}
+.modal-tech{display:flex;flex-wrap:wrap;gap:.4rem}
+.modal-body{padding:1.8rem 2rem 2rem}
+.modal-section{margin-bottom:1.6rem}
+.modal-section-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--leaf);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+.modal-desc{font-size:.92rem;line-height:1.8;color:var(--muted)}
+.modal-desc strong{color:var(--text)}
+.modal-highlights{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.modal-highlights li{font-size:.88rem;line-height:1.65;color:var(--muted);padding-left:1.2rem;position:relative}
+.modal-highlights li::before{content:'›';position:absolute;left:0;color:var(--leaf);font-size:1rem}
+.modal-links{display:flex;gap:1rem;flex-wrap:wrap}
+.modal-link{font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:.6rem 1.4rem;letter-spacing:.08em;text-decoration:none;transition:all .2s;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))}
+.modal-link.primary{background:var(--leaf);color:var(--bg)}
+.modal-link.primary:hover{background:var(--dew);box-shadow:0 0 20px rgba(109,184,74,.3)}
+.modal-link.ghost{border:1px solid var(--border2);color:var(--text)}
+.modal-link.ghost:hover{border-color:var(--leaf);color:var(--leaf)}
 
-  /* CONTACT */
-  #contact { padding: 8rem 6rem; display: grid; grid-template-columns: 1fr 1.3fr; gap: 5rem; align-items: start; }
-  .contact-left h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; color: var(--sunlight); line-height: 1.2; margin-bottom: 1.5rem; }
-  .contact-left h2 em { color: var(--leaf); font-style: italic; }
-  .contact-left p { font-size: 0.93rem; line-height: 1.9; color: var(--mushroom); margin-bottom: 2rem; }
-  .contact-links { display: flex; flex-direction: column; gap: 0.9rem; }
-  .contact-link-item {
-    display: flex; align-items: center; gap: 1rem;
-    font-family: 'DM Mono', monospace; font-size: 0.76rem;
-    color: var(--sage); text-decoration: none; letter-spacing: 0.06em;
-    transition: color 0.2s; cursor: pointer;
-  }
-  .contact-link-item:hover { color: var(--leaf); }
-  .contact-link-icon {
-    width: 34px; height: 34px; border: 1px solid var(--fern);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; flex-shrink: 0;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .contact-link-item:hover .contact-link-icon { background: var(--fern); border-color: var(--leaf); }
+/* Demo preview area */
+.demo-preview{background:var(--bg);border:1px solid var(--border);padding:1.2rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;line-height:1.7;color:var(--muted);max-height:180px;overflow-y:auto;position:relative}
+.demo-preview .line-num{color:var(--border2);margin-right:.8rem;user-select:none}
+.demo-preview .kw{color:var(--leaf)}
+.demo-preview .fn{color:var(--dew)}
+.demo-preview .str{color:var(--gold)}
+.demo-preview .cm{color:var(--muted);opacity:.6}
+.demo-bar{background:var(--s2);border-bottom:1px solid var(--border);padding:.5rem .8rem;display:flex;align-items:center;gap:.5rem;margin:-1.2rem -1.2rem .8rem}
+.demo-dot{width:8px;height:8px;border-radius:50%}
 
-  /* FORM */
-  .contact-form { display: flex; flex-direction: column; gap: 1.1rem; }
-  .form-group { display: flex; flex-direction: column; gap: 0.45rem; }
-  .form-label { font-family: 'DM Mono', monospace; font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage); }
-  .form-input, .form-textarea {
-    background: rgba(22,26,14,0.9); border: 1px solid rgba(46,74,30,0.5);
-    color: var(--canopy); padding: 0.85rem 1.1rem;
-    font-family: 'Lora', serif; font-size: 0.88rem;
-    outline: none; resize: none; width: 100%;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  .form-input:focus, .form-textarea:focus { border-color: var(--sage); box-shadow: 0 0 0 3px rgba(90,125,62,0.1); }
-  .form-input::placeholder, .form-textarea::placeholder { color: rgba(138,106,72,0.5); }
-  .form-textarea { height: 125px; }
-  .form-submit {
-    padding: 0.95rem 2.5rem; background: var(--fern); color: var(--dew); border: none;
-    font-family: 'DM Mono', monospace; font-size: 0.76rem; letter-spacing: 0.16em;
-    text-transform: uppercase; cursor: pointer; align-self: flex-start;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    transition: background 0.3s, transform 0.2s, box-shadow 0.3s, color 0.2s;
-  }
-  .form-submit:hover { background: var(--sage); color: var(--sunlight); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(90,125,62,0.3); }
-  .form-status {
-    font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em;
-    display: none; padding: 0.6rem 1rem; border-left: 3px solid var(--leaf);
-    color: var(--dew); background: rgba(46,74,30,0.15);
-  }
+/* ── CONTACT ── */
+.contact-frame{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:4rem}
+.contact-desc{font-size:.95rem;line-height:1.82;color:var(--muted);margin-bottom:2.5rem}
+.contact-desc strong{color:var(--text)}
+.c-links{display:flex;flex-direction:column;gap:.9rem}
+.c-item{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;background:var(--s1);border:1px solid var(--border);text-decoration:none;transition:border-color .25s,transform .25s}
+.c-item:hover{border-color:var(--border2);transform:translateX(4px)}
+.c-icon{width:34px;height:34px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--leaf);flex-shrink:0;transition:background .25s}
+.c-item:hover .c-icon{background:rgba(109,184,74,.1)}
+.c-lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.c-val{font-size:.88rem;color:var(--text);margin-top:.1rem}
+.availability-block{background:var(--s1);border:1px solid var(--border);padding:2rem;margin-top:2rem;position:relative;overflow:hidden}
+.availability-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--leaf),transparent)}
+.avail-status{display:flex;align-items:center;gap:.7rem;margin-bottom:1rem}
+.avail-dot{width:8px;height:8px;background:var(--leaf);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(109,184,74,.5)}50%{box-shadow:0 0 0 6px rgba(109,184,74,0)}}
+.avail-text{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--leaf);letter-spacing:.1em;text-transform:uppercase}
+.avail-body{font-size:.88rem;line-height:1.7;color:var(--muted)}
+.avail-body strong{color:var(--text)}
 
-  /* FOOTER */
-  footer { padding: 2.5rem 6rem; border-top: 1px solid rgba(46,74,30,0.25); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; }
-  footer p { font-family: 'DM Mono', monospace; font-size: 0.63rem; letter-spacing: 0.12em; color: var(--fern); }
-  footer a { color: var(--sage); text-decoration: none; }
-  footer a:hover { color: var(--leaf); }
+/* ── FOOTER ── */
+footer{position:relative;z-index:2;padding:2rem 3.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ft-left{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.08em}
+.ft-left span{color:var(--text)}
+.ft-links{display:flex;gap:2rem}
+.ft-links a{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.ft-links a:hover{color:var(--leaf)}
 
-  /* ANIMATIONS */
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes slideRight { from { left: -100%; } to { left: 100%; } }
-
-  .reveal { opacity: 0; transform: translateY(38px); transition: opacity 0.75s ease, transform 0.75s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.22s; }
-  .reveal-delay-3 { transition-delay: 0.34s; }
-
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { gap: 1rem; }
-    #hero, #about, #skills, #projects, #contact, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
-    #about, #contact { grid-template-columns: 1fr; gap: 2.5rem; }
-    .about-visual { display: none; }
-    .skills-grid, .projects-grid { grid-template-columns: 1fr; }
-    .project-card.featured { grid-column: span 1; }
-  }
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  #hero,.about-grid,.contact-frame{padding-left:1.5rem;padding-right:1.5rem}
+  section{padding:5rem 1.5rem}
+  .about-grid,.contact-frame{grid-template-columns:1fr;gap:2.5rem}
+  .skills-grid{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:1fr}
+  .p-card.featured{grid-column:span 1}
+  .hero-side{display:none}
+}
 </style>
 </head>
 <body>
-
-<canvas id="forest-bg"></canvas>
-<div id="cursor"></div>
-<div id="cursor-trail"></div>
+<canvas id="bg"></canvas>
+<div id="cur"><div id="cur-dot"></div><div id="cur-ring"></div></div>
 
 <!-- NAV -->
-<nav>
-  <a href="#hero" class="nav-logo">Mohammed Saqib</a>
+<nav id="nav">
+  <a href="#hero" class="nav-logo">MS<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -343,245 +238,205 @@
     <li><a href="#contact">Contact</a></li>
     <li><a href="https://github.com/saqib777" target="_blank" rel="noopener">GitHub ↗</a></li>
   </ul>
+  <a href="mailto:mohammedsaqib532@gmail.com" class="nav-cta">Hire Me</a>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <p class="hero-eyebrow">// Software Development Engineer in Test</p>
-  <h1 class="hero-name">Mohammed<br /><span>Saqib</span></h1>
-  <p class="hero-title">SDET · Test Automation · AI-Powered Testing</p>
-  <p class="hero-bio">
-    Building systems that don't break quietly. I specialize in test automation,
-    CI/CD integration, and AI-augmented quality engineering — writing tests that
-    hunt bugs before users ever meet them.
+  <div class="hero-eyebrow">Available for Software Testing Roles</div>
+  <h1 class="hero-name">
+    Mohammed<br/>
+    <span class="ghost">Saqib</span>
+    <span class="accent">.</span>
+  </h1>
+  <div class="hero-role">
+    <span class="role-tag">Software Tester</span>
+    <span class="role-tag">QA Engineer</span>
+    <span class="role-tag">Test Automation</span>
+    <span class="role-tag">AI-Powered Testing</span>
+  </div>
+  <p class="hero-desc">
+    I find bugs before your users do. <strong>Python · Selenium · Pytest</strong> — building
+    test frameworks, documenting defects, and shipping CI pipelines that keep quality
+    from slipping through the cracks.
   </p>
-  <div class="hero-cta">
-    <a href="#projects" class="btn-primary">View Projects</a>
-    <a href="#contact" class="btn-secondary">Get in Touch</a>
+  <div class="hero-actions">
+    <a href="#projects" class="btn-fill">View My Work</a>
+    <a href="#contact" class="btn-ghost">Get in Touch</a>
   </div>
-  <div class="hero-scroll-hint">
-    <span class="scroll-line"></span>
-    scroll to explore
+  <div class="hero-side">
+    <div>
+      <div class="stat-num">9<em>+</em></div>
+      <div class="stat-lbl">Projects</div>
+    </div>
+    <div>
+      <div class="stat-num">100<em>+</em></div>
+      <div class="stat-lbl">Test Cases Written</div>
+    </div>
+    <div>
+      <div class="stat-num">MCA</div>
+      <div class="stat-lbl">University of Mysore</div>
+    </div>
   </div>
+  <div class="scroll-hint"><span class="sh-line"></span>scroll</div>
 </section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item"><span class="ticker-dot"></span>Selenium WebDriver</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Pytest Framework</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Page Object Model</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>GitHub Actions CI/CD</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Bug Reporting &amp; Analysis</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>AI Test Generation</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Cross-Browser Testing</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Groq / Llama 3</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Manual &amp; Automation</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Selenium WebDriver</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Pytest Framework</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Page Object Model</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>GitHub Actions CI/CD</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Bug Reporting &amp; Analysis</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>AI Test Generation</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Cross-Browser Testing</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Groq / Llama 3</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Manual &amp; Automation</div>
+  </div>
+</div>
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="about-visual" aria-hidden="true">
-    <div class="about-card">
-      <div class="about-card-label">Education</div>
-      <div class="about-card-value">MCA</div>
-      <div class="about-card-sub">University of Mysore<br />Mysuru, Karnataka</div>
+  <div class="sec-label">01 — About</div>
+  <div class="about-grid">
+    <div class="about-body">
+      <h2 class="sec-title reveal">Quality is<br/><em>my craft.</em></h2>
+      <p class="reveal rd1">I'm an MCA final-year student at the <strong>University of Mysore</strong>, based in Bengaluru — targeting my first role as a <strong>Software Tester / QA Engineer</strong>. I test with intent: systematic, documented, and always reproducible.</p>
+      <p class="reveal rd2">My testing work spans <strong>manual test case design</strong>, <strong>Selenium UI automation</strong>, <strong>CI pipeline integration</strong>, and an AI-powered test generation project using <strong>Groq and Llama 3</strong> — covering the full spectrum of how modern QA gets done.</p>
+      <p class="reveal rd3">I build things on <a href="https://github.com/saqib777" target="_blank" rel="noopener">GitHub</a> daily and document everything — because a bug report no one can read is a bug report no one will fix.</p>
     </div>
-    <div class="about-card">
-      <div class="about-card-label">Focus Area</div>
-      <div class="about-card-value">SDET</div>
-      <div class="about-card-sub">Test Automation · AI Testing<br />CI/CD · Quality Engineering</div>
+    <div class="info-card reveal rd2">
+      <div class="info-card-title">// Profile</div>
+      <div class="info-row"><span class="info-key">Status</span><span class="info-val"><span class="badge">Open to Work</span></span></div>
+      <div class="info-row"><span class="info-key">Role Target</span><span class="info-val">Software Tester / QA</span></div>
+      <div class="info-row"><span class="info-key">Location</span><span class="info-val">Bengaluru, Karnataka</span></div>
+      <div class="info-row"><span class="info-key">Education</span><span class="info-val">MCA — Univ. of Mysore</span></div>
+      <div class="info-row"><span class="info-key">Primary Lang</span><span class="info-val">Python</span></div>
+      <div class="info-row"><span class="info-key">Remote-friendly</span><span class="info-val">Yes</span></div>
+      <div class="info-row"><span class="info-key">GitHub</span><span class="info-val"><a href="https://github.com/saqib777" target="_blank" rel="noopener" style="color:var(--leaf);text-decoration:none">saqib777</a></span></div>
     </div>
-    <div class="about-card">
-      <div class="about-card-label">Primary Stack</div>
-      <div class="about-card-value">Python</div>
-      <div class="about-card-sub">Selenium · Pytest · Groq AI<br />GitHub Actions</div>
-    </div>
-  </div>
-  <div class="about-text">
-    <div class="section-divider reveal">
-      <span class="divider-label">// About</span>
-      <span class="divider-line"></span>
-    </div>
-    <h2 class="reveal reveal-delay-1">Quality is <em>engineered</em>,<br />not tested in.</h2>
-    <p class="reveal reveal-delay-2">
-      I'm an MCA student and aspiring SDET based in Mysuru, Karnataka, with a deep
-      focus on building robust, maintainable test automation systems. My work spans
-      UI automation, API testing, bug documentation, and AI-integrated test frameworks.
-    </p>
-    <p class="reveal reveal-delay-3">
-      I believe in testing that thinks — frameworks that adapt, test cases that document
-      themselves, and pipelines that never sleep. Currently exploring the intersection of
-      large language models and intelligent test generation.
-    </p>
   </div>
 </section>
 
 <!-- SKILLS -->
 <section id="skills">
-  <div class="section-divider reveal">
-    <span class="divider-label">// Skills &amp; Tools</span>
-    <span class="divider-line"></span>
-  </div>
+  <div class="sec-label">02 — Skills</div>
+  <h2 class="sec-title reveal">What I bring<br/>to the <em>table.</em></h2>
   <div class="skills-grid">
-    <div class="skill-cluster reveal reveal-delay-1">
-      <span class="cluster-icon">🧪</span>
-      <div class="cluster-title">Test Automation</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Selenium WebDriver</span>
-        <span class="skill-tag">Pytest</span>
-        <span class="skill-tag">Page Object Model</span>
-        <span class="skill-tag">TestNG</span>
-        <span class="skill-tag">Data-Driven Testing</span>
-      </div>
+    <div class="skill-card hi reveal rd1">
+      <div class="skill-card-top"><span class="skill-icon">🧪</span><span class="skill-name">Test Automation</span></div>
+      <div class="skill-tags"><span class="stag">Selenium WebDriver</span><span class="stag">Pytest</span><span class="stag">Page Object Model</span><span class="stag">Data-Driven</span><span class="stag">TestNG</span></div>
     </div>
-    <div class="skill-cluster reveal reveal-delay-2">
-      <span class="cluster-icon">🐍</span>
-      <div class="cluster-title">Languages</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Python</span>
-        <span class="skill-tag">HTML</span>
-        <span class="skill-tag">CSS</span>
-        <span class="skill-tag">JavaScript</span>
-        <span class="skill-tag">SQL</span>
-      </div>
+    <div class="skill-card reveal rd2">
+      <div class="skill-card-top"><span class="skill-icon">🐍</span><span class="skill-name">Languages</span></div>
+      <div class="skill-tags"><span class="stag">Python</span><span class="stag">HTML</span><span class="stag">CSS</span><span class="stag">JavaScript</span><span class="stag">SQL</span></div>
     </div>
-    <div class="skill-cluster reveal reveal-delay-3">
-      <span class="cluster-icon">🤖</span>
-      <div class="cluster-title">AI-Powered Testing</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Groq / Llama 3</span>
-        <span class="skill-tag">AI Test Generation</span>
-        <span class="skill-tag">Self-Healing Selectors</span>
-        <span class="skill-tag">Smart Test Data</span>
-      </div>
+    <div class="skill-card reveal rd3">
+      <div class="skill-card-top"><span class="skill-icon">🤖</span><span class="skill-name">AI-Powered Testing</span></div>
+      <div class="skill-tags"><span class="stag">Groq / Llama 3</span><span class="stag">AI Test Gen</span><span class="stag">Self-Healing Tests</span><span class="stag">Smart Test Data</span></div>
     </div>
-    <div class="skill-cluster reveal reveal-delay-1">
-      <span class="cluster-icon">⚙️</span>
-      <div class="cluster-title">CI/CD &amp; DevOps</div>
-      <div class="skill-tags">
-        <span class="skill-tag">GitHub Actions</span>
-        <span class="skill-tag">Jenkins</span>
-        <span class="skill-tag">Docker (basics)</span>
-        <span class="skill-tag">Git</span>
-      </div>
+    <div class="skill-card reveal rd1">
+      <div class="skill-card-top"><span class="skill-icon">⚙️</span><span class="skill-name">CI/CD & DevOps</span></div>
+      <div class="skill-tags"><span class="stag">GitHub Actions</span><span class="stag">Jenkins</span><span class="stag">Git</span><span class="stag">Docker (basics)</span></div>
     </div>
-    <div class="skill-cluster reveal reveal-delay-2">
-      <span class="cluster-icon">🐛</span>
-      <div class="cluster-title">QA Practices</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Bug Reporting</span>
-        <span class="skill-tag">Test Case Design</span>
-        <span class="skill-tag">Exploratory Testing</span>
-        <span class="skill-tag">Postman</span>
-        <span class="skill-tag">JIRA</span>
-      </div>
+    <div class="skill-card hi reveal rd2">
+      <div class="skill-card-top"><span class="skill-icon">🐛</span><span class="skill-name">QA Practices</span></div>
+      <div class="skill-tags"><span class="stag">Bug Reporting</span><span class="stag">Test Case Design</span><span class="stag">Exploratory Testing</span><span class="stag">Postman</span><span class="stag">JIRA</span></div>
     </div>
-    <div class="skill-cluster reveal reveal-delay-3">
-      <span class="cluster-icon">🌿</span>
-      <div class="cluster-title">Frameworks &amp; Misc</div>
-      <div class="skill-tags">
-        <span class="skill-tag">DSA (Python)</span>
-        <span class="skill-tag">REST API Testing</span>
-        <span class="skill-tag">OOP</span>
-        <span class="skill-tag">Agile / Scrum</span>
-      </div>
+    <div class="skill-card reveal rd3">
+      <div class="skill-card-top"><span class="skill-icon">📋</span><span class="skill-name">Testing Techniques</span></div>
+      <div class="skill-tags"><span class="stag">Boundary Value</span><span class="stag">Equivalence Part.</span><span class="stag">Regression</span><span class="stag">Smoke Testing</span><span class="stag">API Testing</span></div>
     </div>
   </div>
 </section>
 
 <!-- PROJECTS -->
 <section id="projects">
-  <div class="section-divider reveal">
-    <span class="divider-label">// Projects</span>
-    <span class="divider-line"></span>
+  <div class="sec-label">03 — Projects</div>
+  <div class="projects-intro">
+    <div>
+      <h2 class="sec-title reveal" style="margin-bottom:.4rem">Work that<br/><em>speaks for itself.</em></h2>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);letter-spacing:.08em">Click any card to see how it works</p>
+    </div>
+    <a href="https://github.com/saqib777" target="_blank" rel="noopener" class="view-all">All Repos ↗</a>
   </div>
-  <div class="projects-grid">
 
-    <div class="project-card featured reveal">
-      <div class="project-number">01 · Featured</div>
-      <div class="project-name">TestMind AI — Intelligent Test Automation</div>
-      <div class="project-desc">An AI-powered testing framework built with Groq (Llama 3) on the free tier. Features automatic test case generation from natural language, self-healing selectors that adapt when the DOM changes, and a smart test data generator that synthesizes context-aware inputs.</div>
-      <div class="project-tags">
-        <span class="project-tag">Python</span><span class="project-tag">Groq / Llama 3</span>
-        <span class="project-tag">Selenium</span><span class="project-tag">Pytest</span>
-        <span class="project-tag">AI Testing</span>
+  <div class="projects-grid" id="projectsGrid">
+
+    <!-- 01 Featured -->
+    <div class="p-card featured reveal" data-project="0">
+      <div>
+        <div class="p-badge">★ Featured</div>
+        <div class="p-num">01</div>
       </div>
-      <a href="https://github.com/saqib777/testmind-ai" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
+      <div class="p-name">TestMind AI — Intelligent Test Framework</div>
+      <div class="p-desc">AI-powered testing framework using Groq + Llama 3. Generates test cases from natural language, self-heals broken selectors, and creates smart test data — automatically.</div>
+      <div class="p-tech"><span class="ptag hi">Groq / Llama 3</span><span class="ptag hi">Python</span><span class="ptag">Selenium</span><span class="ptag">Pytest</span><span class="ptag">AI Testing</span></div>
+      <div class="p-footer"><span class="p-click-hint">Click to explore ↗</span><span class="p-arrow">VIEW →</span></div>
     </div>
 
-    <div class="project-card reveal reveal-delay-1">
-      <div class="project-number">02</div>
-      <div class="project-name">SDET Automation Framework</div>
-      <div class="project-desc">A production-grade Selenium automation framework built with POM architecture, reusable components, and Pytest integration. Designed to scale across multiple web applications with consistent, maintainable test coverage.</div>
-      <div class="project-tags">
-        <span class="project-tag">Python</span><span class="project-tag">Selenium</span>
-        <span class="project-tag">Pytest</span><span class="project-tag">POM</span>
-      </div>
-      <a href="https://github.com/saqib777/sdet-automation-framework" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
+    <!-- 02 -->
+    <div class="p-card reveal rd1" data-project="1">
+      <div class="p-num">02</div>
+      <div class="p-name">SDET Automation Framework</div>
+      <div class="p-desc">Production-grade Selenium + Pytest framework built on POM architecture. Reusable components, config-driven, scales across multiple apps.</div>
+      <div class="p-tech"><span class="ptag hi">Python</span><span class="ptag">Selenium</span><span class="ptag">Pytest</span><span class="ptag">POM</span></div>
+      <div class="p-footer"><span class="p-click-hint">Click to explore ↗</span><span class="p-arrow">VIEW →</span></div>
     </div>
 
-    <div class="project-card reveal reveal-delay-2">
-      <div class="project-number">03</div>
-      <div class="project-name">Selenium UI Automation Project</div>
-      <div class="project-desc">End-to-end UI test suite covering critical user flows. Implements cross-browser testing, explicit waits, and screenshot capture on failure — wired to a clear reporting layer.</div>
-      <div class="project-tags">
-        <span class="project-tag">Selenium</span><span class="project-tag">Python</span>
-        <span class="project-tag">Cross-browser</span><span class="project-tag">Reporting</span>
-      </div>
-      <a href="https://github.com/saqib777/Selenium_UI_Automation_Project" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
+    <!-- 03 -->
+    <div class="p-card reveal rd2" data-project="2">
+      <div class="p-num">03</div>
+      <div class="p-name">CI Integration Project</div>
+      <div class="p-desc">From-scratch GitHub Actions pipeline — tests trigger on every push and PR. Built step by step to understand CI deeply, not just configure it.</div>
+      <div class="p-tech"><span class="ptag hi">GitHub Actions</span><span class="ptag">Python</span><span class="ptag">Pytest</span><span class="ptag">CI/CD</span></div>
+      <div class="p-footer"><span class="p-click-hint">Click to explore ↗</span><span class="p-arrow">VIEW →</span></div>
     </div>
 
-    <div class="project-card reveal reveal-delay-1">
-      <div class="project-number">04</div>
-      <div class="project-name">CI Integration Project</div>
-      <div class="project-desc">A from-scratch CI/CD pipeline integrating automated tests into GitHub Actions. Tests trigger on every push and pull request, with results reported directly in the workflow — built step by step to understand CI deeply.</div>
-      <div class="project-tags">
-        <span class="project-tag">GitHub Actions</span><span class="project-tag">Python</span>
-        <span class="project-tag">Pytest</span><span class="project-tag">CI/CD</span>
-      </div>
-      <a href="https://github.com/saqib777/CI-integration-Project" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
+    <!-- 04 -->
+    <div class="p-card reveal rd1" data-project="3">
+      <div class="p-num">04</div>
+      <div class="p-name">Selenium UI Automation Project</div>
+      <div class="p-desc">End-to-end UI test suite for critical user flows. Cross-browser testing, explicit waits, screenshot on failure, with a clear reporting layer.</div>
+      <div class="p-tech"><span class="ptag">Selenium</span><span class="ptag hi">Python</span><span class="ptag">Cross-browser</span><span class="ptag">Reporting</span></div>
+      <div class="p-footer"><span class="p-click-hint">Click to explore ↗</span><span class="p-arrow">VIEW →</span></div>
     </div>
 
-    <div class="project-card reveal reveal-delay-2">
-      <div class="project-number">05</div>
-      <div class="project-name">DemoQA Test Cases</div>
-      <div class="project-desc">Structured manual and automated test cases for the DemoQA web application. Covers forms, widgets, interactions, alerts, frames, and browser windows — documented with steps, expected results, and actual outcomes.</div>
-      <div class="project-tags">
-        <span class="project-tag">Manual Testing</span><span class="project-tag">Selenium</span>
-        <span class="project-tag">Test Design</span><span class="project-tag">Documentation</span>
-      </div>
-      <a href="https://github.com/saqib777/demoqa-test-cases" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
+    <!-- 05 -->
+    <div class="p-card reveal rd2" data-project="4">
+      <div class="p-num">05</div>
+      <div class="p-name">Bug Reports Portfolio</div>
+      <div class="p-desc">Curated real-world bug reports to professional standards — severity, priority, reproduction steps, environment, and evidence. QA thinking made visible.</div>
+      <div class="p-tech"><span class="ptag hi">Bug Reporting</span><span class="ptag">QA Analysis</span><span class="ptag">JIRA-style</span><span class="ptag">Documentation</span></div>
+      <div class="p-footer"><span class="p-click-hint">Click to explore ↗</span><span class="p-arrow">VIEW →</span></div>
     </div>
 
-    <div class="project-card reveal reveal-delay-1">
-      <div class="project-number">06</div>
-      <div class="project-name">Bug Reports Portfolio</div>
-      <div class="project-desc">A curated collection of real-world bug reports written to professional standards — covering severity, priority, reproduction steps, environment details, and evidence. Demonstrates analytical thinking in defect documentation.</div>
-      <div class="project-tags">
-        <span class="project-tag">Bug Reporting</span><span class="project-tag">QA Analysis</span>
-        <span class="project-tag">Documentation</span><span class="project-tag">JIRA-style</span>
-      </div>
-      <a href="https://github.com/saqib777/Bug-Reports-Portfolio" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
+    <!-- 06 -->
+    <div class="p-card reveal rd3" data-project="5">
+      <div class="p-num">06</div>
+      <div class="p-name">DemoQA Test Cases</div>
+      <div class="p-desc">Structured manual + automated test cases for DemoQA. Forms, widgets, alerts, frames — documented with steps, expected vs actual results.</div>
+      <div class="p-tech"><span class="ptag">Manual Testing</span><span class="ptag">Selenium</span><span class="ptag hi">Test Design</span><span class="ptag">Documentation</span></div>
+      <div class="p-footer"><span class="p-click-hint">Click to explore ↗</span><span class="p-arrow">VIEW →</span></div>
     </div>
 
-    <div class="project-card reveal reveal-delay-2">
-      <div class="project-number">07</div>
-      <div class="project-name">UI Automation Framework</div>
-      <div class="project-desc">A lightweight, modular UI automation layer built for flexibility. Focuses on clean separation of test logic and configuration, with reusable helpers that reduce code duplication across test suites.</div>
-      <div class="project-tags">
-        <span class="project-tag">Python</span><span class="project-tag">Selenium</span>
-        <span class="project-tag">Modular Design</span>
-      </div>
-      <a href="https://github.com/saqib777/ui-automation-framework" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
-    </div>
-
-    <div class="project-card reveal reveal-delay-1">
-      <div class="project-number">08</div>
-      <div class="project-name">Utility Helpers</div>
-      <div class="project-desc">A personal toolkit of reusable Python utility functions — file handling, data parsing, string manipulation, and test data helpers. Acts as a shared library across automation projects to eliminate repeated boilerplate.</div>
-      <div class="project-tags">
-        <span class="project-tag">Python</span><span class="project-tag">Utilities</span>
-        <span class="project-tag">Reusable Library</span>
-      </div>
-      <a href="https://github.com/saqib777/utility-helpers" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
-    </div>
-
-    <div class="project-card reveal reveal-delay-2">
-      <div class="project-number">09</div>
-      <div class="project-name">Software Testing Projects</div>
-      <div class="project-desc">A collection of software testing exercises and real application test suites, covering equivalence partitioning, boundary value analysis, and structured test planning across different application types.</div>
-      <div class="project-tags">
-        <span class="project-tag">Testing Techniques</span><span class="project-tag">Test Planning</span>
-        <span class="project-tag">QA Fundamentals</span>
-      </div>
-      <a href="https://github.com/saqib777/Software_Testing_Projects" target="_blank" rel="noopener" class="project-link">View on GitHub</a>
+    <!-- 07+ -->
+    <div class="p-card reveal rd2" data-project="6" style="grid-column:span 2">
+      <div class="p-num" style="font-size:1.8rem">07+</div>
+      <div class="p-name">More Projects on GitHub</div>
+      <div class="p-desc">UI Automation Framework · Utility Helpers · Software Testing Projects — reusable Python libraries, modular test layers, and structured QA exercises covering boundary value analysis, equivalence partitioning, and more.</div>
+      <div class="p-tech"><span class="ptag">Python</span><span class="ptag">Selenium</span><span class="ptag">QA Fundamentals</span><span class="ptag">Modular Design</span></div>
+      <div class="p-footer"><span class="p-click-hint">Click to explore ↗</span><span class="p-arrow">VIEW ALL →</span></div>
     </div>
 
   </div>
@@ -589,314 +444,531 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="contact-left">
-    <div class="section-divider reveal">
-      <span class="divider-label">// Contact</span>
-      <span class="divider-line"></span>
+  <div class="sec-label">04 — Contact</div>
+  <h2 class="sec-title reveal">Let's build<br/><em>quality</em> together.</h2>
+  <div class="contact-frame">
+    <div>
+      <p class="contact-desc reveal rd1">
+        I'm actively looking for my first <strong>Software Testing / QA role</strong> — open to
+        junior tester, QA engineer, and test automation positions. Based in Bengaluru,
+        <strong>available immediately</strong>, remote-friendly.
+      </p>
+      <div class="c-links">
+        <a href="mailto:mohammedsaqib532@gmail.com" class="c-item reveal rd1">
+          <div class="c-icon">@</div>
+          <div><div class="c-lbl">Email</div><div class="c-val">mohammedsaqib532@gmail.com</div></div>
+        </a>
+        <a href="https://www.linkedin.com/in/mohammed-saqib-b2771836b/" target="_blank" rel="noopener" class="c-item reveal rd2">
+          <div class="c-icon">in</div>
+          <div><div class="c-lbl">LinkedIn</div><div class="c-val">Mohammed Saqib</div></div>
+        </a>
+        <a href="https://github.com/saqib777" target="_blank" rel="noopener" class="c-item reveal rd3">
+          <div class="c-icon">gh</div>
+          <div><div class="c-lbl">GitHub</div><div class="c-val">github.com/saqib777</div></div>
+        </a>
+      </div>
     </div>
-    <h2 class="reveal reveal-delay-1">Let's build<br /><em>quality</em> together.</h2>
-    <p class="reveal reveal-delay-2">
-      Open to SDET roles, test automation consulting, and collaborations on
-      AI-powered testing tools. Based in Bengaluru — remote-friendly.
-    </p>
-    <div class="contact-links reveal reveal-delay-3">
-      <a href="https://github.com/saqib777" target="_blank" rel="noopener" class="contact-link-item">
-        <span class="contact-link-icon">GH</span>
-        github.com/saqib777
-      </a>
-      <a href="https://www.linkedin.com/in/mohammed-saqib-b2771836b/" target="_blank" rel="noopener" class="contact-link-item">
-        <span class="contact-link-icon">in</span>
-        LinkedIn Profile
-      </a>
-      <a href="mohammedsaqib532@gmail.com" class="contact-link-item">
-        <span class="contact-link-icon">@</span>
-        mohammedsaqib532@gmail.com
-      </a>
+    <div>
+      <div class="availability-block reveal rd2">
+        <div class="avail-status"><div class="avail-dot"></div><div class="avail-text">Available Now</div></div>
+        <div class="avail-body">
+          Targeting <strong>Software Tester / QA Engineer</strong> roles in Bengaluru or remote.
+          Deadline: <strong>May 2026.</strong><br/><br/>
+          If you're hiring for a testing role and want someone who ships quality work, reads specs like a bug hunter, and documents everything — let's talk.
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="contact-form-wrapper reveal reveal-delay-2">
-    <form class="contact-form" id="contactForm">
-      <div class="form-group">
-        <label class="form-label" for="name">Name</label>
-        <input class="form-input" type="text" id="name" name="name" placeholder="Your name" required />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="email">Email</label>
-        <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com" required />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="subject">Subject</label>
-        <input class="form-input" type="text" id="subject" name="subject" placeholder="SDET opportunity / collaboration" />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="message">Message</label>
-        <textarea class="form-textarea" id="message" name="message" placeholder="Tell me about the role or project..." required></textarea>
-      </div>
-      <div class="form-status" id="formStatus"></div>
-      <button type="submit" class="form-submit">Send Message</button>
-    </form>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2025 Mohammed Saqib — SDET Portfolio</p>
-  <p>Built with intent. Tested with care. <a href="https://github.com/saqib777" target="_blank" rel="noopener">GitHub ↗</a></p>
+  <div class="ft-left">© 2025 <span>Mohammed Saqib</span> — QA Portfolio</div>
+  <div class="ft-links">
+    <a href="https://github.com/saqib777" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/mohammed-saqib-b2771836b/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:mohammedsaqib532@gmail.com">Email</a>
+  </div>
 </footer>
 
+<!-- MODALS DATA + OVERLAY -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <button class="modal-close" id="modalClose">[ ESC ] Close</button>
+      <div class="modal-badge" id="mBadge"></div>
+      <div class="modal-title" id="mTitle"></div>
+      <div class="modal-tech" id="mTech"></div>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
 <script>
-/* CURSOR */
-const cursor = document.getElementById('cursor');
-const trail  = document.getElementById('cursor-trail');
-let mx = 0, my = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top  = my + 'px';
-});
-setInterval(() => {
-  trail.style.left = mx + 'px';
-  trail.style.top  = my + 'px';
-}, 80);
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.width = '20px'; cursor.style.height = '20px';
-    cursor.style.background = 'var(--gold)';
-  });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.width = '12px'; cursor.style.height = '12px';
-    cursor.style.background = 'var(--leaf)';
-  });
-});
-
-/* FOREST CANVAS */
-const canvas = document.getElementById('forest-bg');
-const ctx    = canvas.getContext('2d');
-let W, H;
-
-/* Stars */
-const stars = Array.from({length: 140}, () => ({
-  x: Math.random(), y: Math.random() * 0.58,
-  r: Math.random() * 1.2 + 0.2,
-  phase: Math.random() * Math.PI * 2,
-  speed: 0.005 + Math.random() * 0.01
-}));
-
-/* Mist layers */
-const mistLayers = [
-  {yFrac: 0.62, speedX: 0.15, alpha: 0.05, xOff: 0},
-  {yFrac: 0.70, speedX: 0.10, alpha: 0.07, xOff: 300},
-  {yFrac: 0.78, speedX: 0.08, alpha: 0.09, xOff: 600},
-  {yFrac: 0.85, speedX: 0.06, alpha: 0.11, xOff: 100},
+/* ── PROJECT DATA ── */
+const projects = [
+  {
+    badge:'★ Featured Project',
+    title:'TestMind AI — Intelligent Test Framework',
+    tech:['Python','Groq / Llama 3','Selenium','Pytest','AI Testing'],
+    hi:[0,1],
+    desc:'An AI-powered testing framework built entirely on the Groq free tier using Llama 3. The core idea: <strong>make tests write and heal themselves.</strong> Natural language prompts become executable test cases, broken selectors auto-repair, and test data adapts to context.',
+    highlights:[
+      'AI test case generation — describe a feature in plain English, get executable Pytest test functions',
+      'Self-healing selectors — when a DOM element moves, the framework finds it again using AI similarity',
+      'Smart test data generator — produces realistic, context-aware inputs instead of hardcoded fixtures',
+      'Built on Groq free tier — no paid API keys required, accessible to anyone',
+      'Full Selenium integration — generated tests run against real browsers end-to-end',
+    ],
+    code:[
+      {lbl:'test_generator.py', lines:[
+        ['1','<span class="kw">from</span> groq_client <span class="kw">import</span> generate_test'],
+        ['2',''],
+        ['3','<span class="cm"># Natural language → executable test</span>'],
+        ['4','spec = <span class="str">"Login form rejects empty password"</span>'],
+        ['5','test_fn = <span class="fn">generate_test</span>(spec, target_url=LOGIN_URL)'],
+        ['6','<span class="fn">run_test</span>(test_fn)  <span class="cm"># ✓ Passes</span>'],
+      ]}
+    ],
+    link:'https://github.com/saqib777/testmind-ai'
+  },
+  {
+    badge:'Test Automation',
+    title:'SDET Automation Framework',
+    tech:['Python','Selenium WebDriver','Pytest','Page Object Model','Config-Driven'],
+    hi:[0,1],
+    desc:'A <strong>production-grade test automation framework</strong> built with Selenium + Pytest following strict Page Object Model architecture. Every page is a class, every action is a method — zero duplication, full maintainability.',
+    highlights:[
+      'Strict POM: every page encapsulated as a class, test logic separated from locators',
+      'Config-driven: switch environments (dev/staging/prod) without touching test code',
+      'Reusable base classes — login, navigation, wait strategies abstracted away',
+      'Parallel test execution support via pytest-xdist',
+      'HTML report generation with screenshots on failure',
+    ],
+    code:[
+      {lbl:'pages/login_page.py', lines:[
+        ['1','<span class="kw">class</span> <span class="fn">LoginPage</span>(BasePage):'],
+        ['2','  USERNAME = (By.ID, <span class="str">"username"</span>)'],
+        ['3','  PASSWORD = (By.ID, <span class="str">"password"</span>)'],
+        ['4',''],
+        ['5','  <span class="kw">def</span> <span class="fn">login</span>(self, user, pwd):'],
+        ['6','    self.<span class="fn">type</span>(self.USERNAME, user)'],
+        ['7','    self.<span class="fn">type</span>(self.PASSWORD, pwd)'],
+        ['8','    self.<span class="fn">click</span>(self.SUBMIT)'],
+      ]}
+    ],
+    link:'https://github.com/saqib777/sdet-automation-framework'
+  },
+  {
+    badge:'CI/CD Integration',
+    title:'CI Integration Project',
+    tech:['GitHub Actions','Python','Pytest','CI/CD','Workflow Automation'],
+    hi:[0],
+    desc:'A <strong>from-scratch CI/CD pipeline</strong> built to deeply understand GitHub Actions — not just copy a template. Tests trigger automatically on every push and pull request, with test results surfaced directly in the GitHub workflow UI.',
+    highlights:[
+      'Triggers on push and pull_request to main — no manual test runs ever',
+      'Matrix testing: runs across Python 3.9, 3.10, 3.11 in parallel',
+      'Workflow artifacts: test reports and failure screenshots saved per run',
+      'Built from zero config — every YAML line intentional, nothing copy-pasted',
+      'Status badges in README — live pass/fail state visible at a glance',
+    ],
+    code:[
+      {lbl:'.github/workflows/test.yml', lines:[
+        ['1','<span class="kw">on</span>: [push, pull_request]'],
+        ['2','<span class="kw">jobs</span>:'],
+        ['3','  <span class="fn">test</span>:'],
+        ['4','    runs-on: ubuntu-latest'],
+        ['5','    <span class="kw">steps</span>:'],
+        ['6','      - uses: actions/checkout@v3'],
+        ['7','      - run: pip install -r requirements.txt'],
+        ['8','      - run: pytest --html=report.html'],
+      ]}
+    ],
+    link:'https://github.com/saqib777/CI-integration-Project'
+  },
+  {
+    badge:'UI Automation',
+    title:'Selenium UI Automation Project',
+    tech:['Selenium WebDriver','Python','Cross-browser','pytest-html','WebDriverManager'],
+    hi:[0,1],
+    desc:'An <strong>end-to-end UI test suite</strong> targeting real web applications across multiple browsers. Covers complete user journeys — login, form submission, navigation, alerts — with explicit wait strategies and detailed failure reporting.',
+    highlights:[
+      'Cross-browser: Chrome, Firefox, Edge — WebDriverManager handles driver setup',
+      'Explicit wait strategies: no time.sleep() — every wait is tied to a condition',
+      'Screenshot on failure: every failed test captures the exact browser state',
+      'pytest-html reports: shareable test results with pass/fail stats',
+      'Covers: forms, dropdowns, checkboxes, alerts, modals, iframes',
+    ],
+    code:[
+      {lbl:'tests/test_login.py', lines:[
+        ['1','<span class="kw">def</span> <span class="fn">test_login_valid_credentials</span>(driver):'],
+        ['2','  page = <span class="fn">LoginPage</span>(driver)'],
+        ['3','  page.<span class="fn">navigate</span>()'],
+        ['4','  page.<span class="fn">login</span>(<span class="str">"standard_user"</span>, <span class="str">"secret"</span>)'],
+        ['5','  <span class="kw">assert</span> <span class="str">"/inventory"</span> <span class="kw">in</span> driver.current_url'],
+        ['6','  <span class="cm"># ✓ PASSED — 0.84s</span>'],
+      ]}
+    ],
+    link:'https://github.com/saqib777/Selenium_UI_Automation_Project'
+  },
+  {
+    badge:'QA Documentation',
+    title:'Bug Reports Portfolio',
+    tech:['Bug Reporting','QA Analysis','JIRA-style','Severity Classification','Reproducibility'],
+    hi:[0,1],
+    desc:'A <strong>curated portfolio of professional bug reports</strong> sourced from real-world applications in March 2026. Every report follows industry standards — severity, priority, environment, exact reproduction steps, expected vs actual results, and evidence.',
+    highlights:[
+      'Real bugs: sourced from live production applications, not synthetic examples',
+      'Full JIRA-style format: Title · ID · Severity · Priority · Steps · Expected · Actual · Environment',
+      'Evidence attached: screenshots, console logs, network traces where relevant',
+      'Severity classification: Critical / Major / Minor / Trivial with rationale',
+      'Shows analytical thinking — not just "it doesn\'t work", but why, when, and under what conditions',
+    ],
+    code:[],
+    link:'https://github.com/saqib777/Bug-Reports-Portfolio'
+  },
+  {
+    badge:'Manual + Automation',
+    title:'DemoQA Test Cases',
+    tech:['Manual Testing','Selenium','Test Case Design','Boundary Value Analysis','Documentation'],
+    hi:[0,2],
+    desc:'Comprehensive <strong>manual and automated test coverage</strong> for the DemoQA web platform. Every test is documented with test case ID, preconditions, steps, expected result, actual result, and status — the full professional format.',
+    highlights:[
+      'Modules covered: Forms, Widgets, Interactions, Alerts & Frames, Browser Windows',
+      'Test design techniques: equivalence partitioning, boundary value, positive/negative',
+      'Both manual test case documents and Selenium automation scripts',
+      'Steps numbered with exact actions, inputs, and assertions',
+      'Traceable: each test case ties back to a functional requirement',
+    ],
+    code:[
+      {lbl:'tests/test_forms.py', lines:[
+        ['1','<span class="kw">def</span> <span class="fn">test_practice_form_required_fields</span>(driver):'],
+        ['2','  <span class="cm"># TC-FORM-003: Submit with empty required fields</span>'],
+        ['3','  page = <span class="fn">PracticeFormPage</span>(driver)'],
+        ['4','  page.<span class="fn">click_submit</span>()'],
+        ['5','  <span class="kw">assert</span> page.<span class="fn">get_validation_errors</span>() == 3'],
+        ['6','  <span class="cm"># Expected: 3 errors — ✓ PASSED</span>'],
+      ]}
+    ],
+    link:'https://github.com/saqib777/demoqa-test-cases'
+  },
+  {
+    badge:'More Work',
+    title:'More Projects on GitHub',
+    tech:['Python','Selenium','QA Fundamentals','Utility Libraries'],
+    hi:[0],
+    desc:'Additional repos including <strong>UI Automation Framework</strong> (modular, reusable), <strong>Utility Helpers</strong> (Python toolkit for test data, file ops, string utils), and <strong>Software Testing Projects</strong> (structured exercises in testing techniques).',
+    highlights:[
+      'ui-automation-framework: lightweight, flexible Selenium layer with helper abstractions',
+      'utility-helpers: reusable Python functions used across multiple automation projects',
+      'Software_Testing_Projects: BVA, EP, state transition — fundamental QA techniques practised with real code',
+      'dsa-journal: Python DSA solutions paired with Pytest test cases — daily contribution streak',
+    ],
+    code:[],
+    link:'https://github.com/saqib777'
+  }
 ];
 
-/* Fireflies */
-const flies = Array.from({length: 100}, () => ({
-  xFrac: Math.random(),
-  yFrac: 0.38 + Math.random() * 0.52,
-  r: 0.5 + Math.random() * 1.6,
-  dx: (Math.random() - 0.5) * 0.00035,
-  dy: (Math.random() - 0.5) * 0.00022,
-  phase: Math.random() * Math.PI * 2,
-  phaseSpeed: 0.018 + Math.random() * 0.028,
-  warm: Math.random() > 0.35
-}));
+/* ── MODAL LOGIC ── */
+const overlay   = document.getElementById('modalOverlay');
+const modal     = document.getElementById('modal');
+const mClose    = document.getElementById('modalClose');
+const mBadge    = document.getElementById('mBadge');
+const mTitle    = document.getElementById('mTitle');
+const mTech     = document.getElementById('mTech');
+const mBody     = document.getElementById('mBody');
 
-/* Tree data — 3 layers */
-let layers = [];
-function buildTrees() {
-  layers = [
-    buildLayer(22, 0.22, 0.30, 0.74, 0.45),
-    buildLayer(16, 0.30, 0.42, 0.83, 0.70),
-    buildLayer(11, 0.40, 0.55, 0.93, 0.95),
-  ];
-}
-function buildLayer(count, minH, maxH, yFrac, alpha) {
-  const trees = [];
-  for (let i = 0; i < count; i++) {
-    const slot = i / count;
-    trees.push({
-      xFrac: slot + Math.random() * (0.9 / count),
-      hFrac: minH + Math.random() * (maxH - minH),
-      wFrac: 0.016 + Math.random() * 0.014,
-      sway: Math.random() * Math.PI * 2,
-      swayAmp: 1.2 + Math.random() * 2.8,
-      swaySpeed: 0.0004 + Math.random() * 0.0006,
-      tiers: 5 + Math.floor(Math.random() * 5),
+function openModal(idx) {
+  const p = projects[idx];
+  mBadge.textContent = p.badge;
+  mTitle.textContent = p.title;
+  mTech.innerHTML = p.tech.map((t,i) =>
+    `<span class="ptag${p.hi.includes(i)?' hi':''}">${t}</span>`
+  ).join('');
+
+  let body = '';
+
+  body += `<div class="modal-section">
+    <div class="modal-section-title">// Overview</div>
+    <div class="modal-desc">${p.desc}</div>
+  </div>`;
+
+  if (p.highlights.length) {
+    body += `<div class="modal-section">
+      <div class="modal-section-title">// Key Features</div>
+      <ul class="modal-highlights">${p.highlights.map(h=>`<li>${h}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  if (p.code.length) {
+    p.code.forEach(c => {
+      body += `<div class="modal-section">
+        <div class="modal-section-title">// Code Snapshot — ${c.lbl}</div>
+        <div class="demo-preview">
+          <div class="demo-bar">
+            <div class="demo-dot" style="background:#ff5f57"></div>
+            <div class="demo-dot" style="background:#febc2e"></div>
+            <div class="demo-dot" style="background:#28c840"></div>
+            <span style="font-size:.65rem;color:var(--muted);margin-left:.5rem">${c.lbl}</span>
+          </div>
+          ${c.lines.map(l=>`<div><span class="line-num">${l[0]}</span>${l[1]}</div>`).join('')}
+        </div>
+      </div>`;
     });
   }
-  return {trees, yFrac, alpha};
+
+  body += `<div class="modal-section">
+    <div class="modal-section-title">// Links</div>
+    <div class="modal-links">
+      <a href="${p.link}" target="_blank" rel="noopener" class="modal-link primary">View on GitHub ↗</a>
+    </div>
+  </div>`;
+
+  mBody.innerHTML = body;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modal.scrollTop = 0;
 }
 
-function drawPine(tree, layer, t) {
-  const tx = tree.xFrac * W;
-  const ty = layer.yFrac * H;
-  const th = tree.hFrac * H;
-  const tw = tree.wFrac * W;
-  const sway = Math.sin(t * tree.swaySpeed + tree.sway) * tree.swayAmp;
+function closeModal() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
 
-  ctx.save();
-  ctx.translate(tx + sway * 0.4, ty);
+document.querySelectorAll('.p-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const idx = parseInt(card.getAttribute('data-project'));
+    openModal(idx);
+  });
+});
 
-  /* Trunk */
-  ctx.fillStyle = `rgba(6,10,4,${layer.alpha * 0.8})`;
-  ctx.fillRect(-tw * 0.07, -th * 0.04, tw * 0.14, th * 0.08);
+mClose.addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  /* Canopy tiers */
-  ctx.beginPath();
-  ctx.moveTo(sway * 0.1, -th);
-  const n = tree.tiers;
-  for (let j = 0; j < n; j++) {
-    const p0 = j / n, p1 = (j + 1) / n;
-    const y0 = -th + p0 * th * 0.93;
-    const y1 = -th + p1 * th * 0.93;
-    const w0 = tw * (0.15 + p0 * 0.85);
-    const w1 = tw * (0.15 + p1 * 0.85);
-    const notch = th * 0.035;
-    ctx.lineTo(-w0 + sway * (1 - p0) * 0.3, y0 + notch);
-    ctx.lineTo(-w0 * 0.5 + sway * (1 - p0) * 0.15, y0);
-    ctx.lineTo(-w1 * 0.5, y1);
-    ctx.lineTo(-w1, y1 + notch * 0.6);
+/* ── CURSOR ── */
+const dot  = document.getElementById('cur-dot');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+(function animCur() {
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+  rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animCur);
+})();
+document.querySelectorAll('a,button,.p-card,.skill-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-big'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-big'));
+});
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);
+},{passive:true});
+
+/* ── REVEAL ── */
+const revEls=document.querySelectorAll('.reveal');
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('visible'),i*70);
+      revObs.unobserve(e.target);
+    }
+  });
+},{threshold:.08});
+revEls.forEach(el=>revObs.observe(el));
+
+/* ── SKILL CARD MOUSE GLOW ── */
+document.querySelectorAll('.skill-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+    card.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
+  });
+});
+
+/* ── FOREST CANVAS ── */
+const canvas=document.getElementById('bg');
+const ctx=canvas.getContext('2d');
+let W,H;
+
+const stars=Array.from({length:160},()=>({
+  x:Math.random(),y:Math.random()*0.55,
+  r:Math.random()*1.1+0.15,
+  phase:Math.random()*Math.PI*2,
+  speed:0.004+Math.random()*0.009
+}));
+
+const mistBands=[
+  {yf:0.60,sx:0.14,alpha:0.042,xo:0},
+  {yf:0.68,sx:0.10,alpha:0.055,xo:400},
+  {yf:0.76,sx:0.08,alpha:0.068,xo:200},
+  {yf:0.83,sx:0.06,alpha:0.080,xo:600},
+];
+
+const flies=Array.from({length:110},()=>({
+  xf:Math.random(),yf:0.35+Math.random()*0.52,
+  r:0.4+Math.random()*1.6,
+  dx:(Math.random()-.5)*0.00038,
+  dy:(Math.random()-.5)*0.00022,
+  ph:Math.random()*Math.PI*2,
+  ps:0.016+Math.random()*0.03,
+  warm:Math.random()>0.3
+}));
+
+let treeLayers=[];
+function buildTrees(){
+  treeLayers=[
+    mkLayer(24,0.20,0.28,0.72,0.42),
+    mkLayer(17,0.28,0.40,0.81,0.68),
+    mkLayer(12,0.38,0.54,0.92,0.94),
+  ];
+}
+function mkLayer(n,mnh,mxh,yf,al){
+  const trees=[];
+  for(let i=0;i<n;i++){
+    const slot=i/n;
+    trees.push({
+      xf:slot+Math.random()*(0.88/n),
+      hf:mnh+Math.random()*(mxh-mnh),
+      wf:0.014+Math.random()*0.014,
+      sw:Math.random()*Math.PI*2,
+      sa:1.2+Math.random()*2.8,
+      ss:0.00035+Math.random()*0.0005,
+      tiers:5+Math.floor(Math.random()*6),
+    });
   }
-  ctx.lineTo(-tw * 0.5, 0);
-  ctx.lineTo(tw * 0.5, 0);
-  for (let j = n - 1; j >= 0; j--) {
-    const p0 = j / n, p1 = (j + 1) / n;
-    const y0 = -th + p0 * th * 0.93;
-    const y1 = -th + p1 * th * 0.93;
-    const w0 = tw * (0.15 + p0 * 0.85);
-    const w1 = tw * (0.15 + p1 * 0.85);
-    const notch = th * 0.035;
-    ctx.lineTo(w1, y1 + notch * 0.6);
-    ctx.lineTo(w1 * 0.5, y1);
-    ctx.lineTo(w0 * 0.5 + sway * (1 - p0) * 0.15, y0);
-    ctx.lineTo(w0 + sway * (1 - p0) * 0.3, y0 + notch);
+  return{trees,yf,al};
+}
+
+function drawPine(tree,layer,t){
+  const tx=tree.xf*W, ty=layer.yf*H;
+  const th=tree.hf*H,  tw=tree.wf*W;
+  const sw=Math.sin(t*tree.ss+tree.sw)*tree.sa;
+  ctx.save();
+  ctx.translate(tx+sw*0.4,ty);
+  ctx.fillStyle=`rgba(6,10,5,${layer.al*0.7})`;
+  ctx.fillRect(-tw*0.07,-th*0.04,tw*0.14,th*0.06);
+  const n=tree.tiers;
+  ctx.beginPath();
+  ctx.moveTo(sw*0.1,-th);
+  for(let j=0;j<n;j++){
+    const p0=j/n,p1=(j+1)/n;
+    const y0=-th+p0*th*0.93, y1=-th+p1*th*0.93;
+    const w0=tw*(0.14+p0*0.86), w1=tw*(0.14+p1*0.86);
+    const nd=th*0.033;
+    ctx.lineTo(-w0+sw*(1-p0)*0.28,y0+nd);
+    ctx.lineTo(-w0*0.5+sw*(1-p0)*0.12,y0);
+    ctx.lineTo(-w1*0.5,y1);
+    ctx.lineTo(-w1,y1+nd*0.55);
+  }
+  ctx.lineTo(-tw*0.45,0); ctx.lineTo(tw*0.45,0);
+  for(let j=n-1;j>=0;j--){
+    const p0=j/n,p1=(j+1)/n;
+    const y0=-th+p0*th*0.93, y1=-th+p1*th*0.93;
+    const w0=tw*(0.14+p0*0.86), w1=tw*(0.14+p1*0.86);
+    const nd=th*0.033;
+    ctx.lineTo(w1,y1+nd*0.55);
+    ctx.lineTo(w1*0.5,y1);
+    ctx.lineTo(w0*0.5+sw*(1-p0)*0.12,y0);
+    ctx.lineTo(w0+sw*(1-p0)*0.28,y0+nd);
   }
   ctx.closePath();
-
-  const g = ctx.createLinearGradient(0, -th, 0, 0);
-  const a = layer.alpha;
-  g.addColorStop(0,   `rgba(28,46,18,${a * 0.65})`);
-  g.addColorStop(0.5, `rgba(14,24,9,${a})`);
-  g.addColorStop(1,   `rgba(8,14,5,${a})`);
-  ctx.fillStyle = g;
+  const g=ctx.createLinearGradient(0,-th,0,0);
+  const a=layer.al;
+  g.addColorStop(0,`rgba(30,50,20,${a*0.55})`);
+  g.addColorStop(0.5,`rgba(14,22,10,${a})`);
+  g.addColorStop(1,`rgba(8,13,6,${a})`);
+  ctx.fillStyle=g;
   ctx.fill();
-
-  /* Soft moonlight rim on left edge */
-  ctx.shadowColor = 'rgba(180,220,130,0.06)';
-  ctx.shadowBlur = 6;
-  ctx.strokeStyle = `rgba(120,180,80,${a * 0.12})`;
-  ctx.lineWidth = 0.8;
+  ctx.strokeStyle=`rgba(100,160,65,${a*0.1})`;
+  ctx.lineWidth=0.6;
   ctx.stroke();
-  ctx.shadowBlur = 0;
-
   ctx.restore();
 }
 
-function resize() {
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
+function resize(){
+  W=canvas.width=window.innerWidth;
+  H=canvas.height=window.innerHeight;
   buildTrees();
 }
 
-let t = 0;
-function draw() {
-  ctx.clearRect(0, 0, W, H);
-
+let t=0;
+function draw(){
+  ctx.clearRect(0,0,W,H);
   /* Sky */
-  const sky = ctx.createLinearGradient(0, 0, 0, H * 0.8);
-  sky.addColorStop(0,    '#030506');
-  sky.addColorStop(0.2,  '#050c07');
-  sky.addColorStop(0.5,  '#081208');
-  sky.addColorStop(0.75, '#0c1a0a');
-  sky.addColorStop(1,    '#10200d');
-  ctx.fillStyle = sky;
-  ctx.fillRect(0, 0, W, H);
+  const sky=ctx.createLinearGradient(0,0,0,H*0.8);
+  sky.addColorStop(0,'#020403');
+  sky.addColorStop(0.2,'#040806');
+  sky.addColorStop(0.5,'#070f07');
+  sky.addColorStop(0.75,'#0a160a');
+  sky.addColorStop(1,'#0d1c0c');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
 
-  /* Moon halo */
-  const moonX = W * 0.76, moonY = H * 0.11, moonR = 38;
-  const halo = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, moonR * 7);
-  halo.addColorStop(0,    'rgba(210,240,160,0.22)');
-  halo.addColorStop(0.15, 'rgba(180,220,120,0.12)');
-  halo.addColorStop(0.4,  'rgba(140,190,90,0.05)');
-  halo.addColorStop(1,    'transparent');
-  ctx.fillStyle = halo;
-  ctx.fillRect(0, 0, W, H * 0.5);
-
-  /* Moon disk */
-  const moonDisk = ctx.createRadialGradient(moonX - 8, moonY - 6, 2, moonX, moonY, moonR);
-  moonDisk.addColorStop(0,   'rgba(245,252,220,0.92)');
-  moonDisk.addColorStop(0.6, 'rgba(215,240,175,0.80)');
-  moonDisk.addColorStop(1,   'rgba(170,215,120,0.40)');
-  ctx.beginPath();
-  ctx.arc(moonX, moonY, moonR, 0, Math.PI * 2);
-  ctx.fillStyle = moonDisk;
-  ctx.fill();
+  /* Moon */
+  const moonX=W*0.78, moonY=H*0.10, moonR=34;
+  const mhalo=ctx.createRadialGradient(moonX,moonY,0,moonX,moonY,moonR*6.5);
+  mhalo.addColorStop(0,'rgba(190,230,140,0.20)');
+  mhalo.addColorStop(0.18,'rgba(160,210,110,0.10)');
+  mhalo.addColorStop(0.45,'rgba(120,180,80,0.04)');
+  mhalo.addColorStop(1,'transparent');
+  ctx.fillStyle=mhalo; ctx.fillRect(0,0,W,H*0.5);
+  const mdisk=ctx.createRadialGradient(moonX-7,moonY-5,1,moonX,moonY,moonR);
+  mdisk.addColorStop(0,'rgba(240,252,218,0.90)');
+  mdisk.addColorStop(0.65,'rgba(210,238,170,0.78)');
+  mdisk.addColorStop(1,'rgba(160,210,110,0.35)');
+  ctx.beginPath(); ctx.arc(moonX,moonY,moonR,0,Math.PI*2);
+  ctx.fillStyle=mdisk; ctx.fill();
 
   /* Stars */
-  stars.forEach((s, i) => {
-    const alpha = 0.15 + Math.sin(t * s.speed + s.phase) * 0.28;
-    ctx.beginPath();
-    ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(195,228,155,${Math.max(0, alpha)})`;
-    ctx.fill();
+  stars.forEach(s=>{
+    const a=0.12+Math.sin(t*s.speed+s.phase)*0.28;
+    ctx.beginPath(); ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(190,225,148,${Math.max(0,a)})`; ctx.fill();
   });
 
-  /* Mist / ground fog */
-  mistLayers.forEach(m => {
-    m.xOff -= m.speedX;
-    const cx = (m.xOff % (W * 1.4));
-    const gy = m.yFrac * H;
-    const mg = ctx.createLinearGradient(0, gy - 40, 0, gy + 55);
-    mg.addColorStop(0, 'transparent');
-    mg.addColorStop(0.45, `rgba(148,195,105,${m.alpha})`);
-    mg.addColorStop(1, 'transparent');
-    ctx.fillStyle = mg;
-    ctx.beginPath();
-    ctx.ellipse(cx, gy, W * 1.1, 38, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(cx + W * 0.65, gy + 14, W * 0.85, 26, 0, 0, Math.PI * 2);
-    ctx.fill();
+  /* Mist */
+  mistBands.forEach(m=>{
+    m.xo-=m.sx;
+    const cx=(m.xo%(W*1.5));
+    const gy=m.yf*H;
+    const mg=ctx.createLinearGradient(0,gy-38,0,gy+52);
+    mg.addColorStop(0,'transparent');
+    mg.addColorStop(0.42,`rgba(135,188,92,${m.alpha})`);
+    mg.addColorStop(1,'transparent');
+    ctx.fillStyle=mg;
+    ctx.beginPath(); ctx.ellipse(cx,gy,W*1.15,36,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx+W*0.6,gy+16,W*0.82,24,0,0,Math.PI*2); ctx.fill();
   });
 
-  /* Trees back → front */
-  layers.forEach(layer => {
-    layer.trees.forEach(tree => drawPine(tree, layer, t));
-  });
+  /* Trees */
+  treeLayers.forEach(layer=>layer.trees.forEach(tree=>drawPine(tree,layer,t)));
 
   /* Ground */
-  const grd = ctx.createLinearGradient(0, H * 0.87, 0, H);
-  grd.addColorStop(0, 'rgba(5,10,3,0)');
-  grd.addColorStop(0.35, 'rgba(5,10,3,0.88)');
-  grd.addColorStop(1, 'rgba(3,6,2,1)');
-  ctx.fillStyle = grd;
-  ctx.fillRect(0, H * 0.87, W, H * 0.13);
+  const gr=ctx.createLinearGradient(0,H*0.88,0,H);
+  gr.addColorStop(0,'rgba(4,8,3,0)');
+  gr.addColorStop(0.38,'rgba(4,8,3,0.9)');
+  gr.addColorStop(1,'rgba(2,5,2,1)');
+  ctx.fillStyle=gr; ctx.fillRect(0,H*0.88,W,H*0.12);
 
   /* Fireflies */
-  flies.forEach(f => {
-    f.xFrac += f.dx; f.yFrac += f.dy;
-    f.phase  += f.phaseSpeed;
-    if (f.xFrac < 0) f.xFrac = 1;
-    if (f.xFrac > 1) f.xFrac = 0;
-    if (f.yFrac < 0.35) f.yFrac = 0.88;
-    if (f.yFrac > 0.92) f.yFrac = 0.38;
-    const alpha = Math.max(0, Math.sin(f.phase));
-    if (alpha < 0.02) return;
-    const fx = f.xFrac * W, fy = f.yFrac * H;
-    const [r,g,b] = f.warm ? [165,215,90] : [210,200,80];
-    const glow = ctx.createRadialGradient(fx, fy, 0, fx, fy, f.r * 8);
-    glow.addColorStop(0,   `rgba(${r},${g},${b},${alpha * 0.85})`);
-    glow.addColorStop(0.25,`rgba(${r},${g},${b},${alpha * 0.25})`);
-    glow.addColorStop(1,   'transparent');
-    ctx.beginPath();
-    ctx.arc(fx, fy, f.r * 8, 0, Math.PI * 2);
-    ctx.fillStyle = glow;
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(fx, fy, f.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${r+50},${g+40},${b+20},${alpha})`;
-    ctx.fill();
+  flies.forEach(f=>{
+    f.xf+=f.dx; f.yf+=f.dy; f.ph+=f.ps;
+    if(f.xf<0)f.xf=1; if(f.xf>1)f.xf=0;
+    if(f.yf<0.33)f.yf=0.88; if(f.yf>0.92)f.yf=0.36;
+    const alpha=Math.max(0,Math.sin(f.ph));
+    if(alpha<0.02)return;
+    const fx=f.xf*W, fy=f.yf*H;
+    const [r,g,b]=f.warm?[150,210,80]:[200,195,75];
+    const glow=ctx.createRadialGradient(fx,fy,0,fx,fy,f.r*8);
+    glow.addColorStop(0,`rgba(${r},${g},${b},${alpha*0.82})`);
+    glow.addColorStop(0.28,`rgba(${r},${g},${b},${alpha*0.22})`);
+    glow.addColorStop(1,'transparent');
+    ctx.beginPath(); ctx.arc(fx,fy,f.r*8,0,Math.PI*2);
+    ctx.fillStyle=glow; ctx.fill();
+    ctx.beginPath(); ctx.arc(fx,fy,f.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${r+50},${g+40},${b+20},${alpha})`; ctx.fill();
   });
 
   t++;
@@ -904,56 +976,8 @@ function draw() {
 }
 
 resize();
-window.addEventListener('resize', resize);
+window.addEventListener('resize',resize);
 draw();
-
-/* SCROLL REVEAL */
-const revEls = document.querySelectorAll('.reveal');
-const revObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
-  });
-}, {threshold: 0.1});
-revEls.forEach(el => revObs.observe(el));
-
-/* CONTACT FORM */
-const form   = document.getElementById('contactForm');
-const status = document.getElementById('formStatus');
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  const btn = form.querySelector('.form-submit');
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-  try {
-    const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-      method: 'POST',
-      headers: {'Accept': 'application/json'},
-      body: new FormData(form)
-    });
-    if (res.ok) {
-      status.textContent = '✓ Message sent. I will get back to you soon.';
-      status.style.borderLeftColor = 'var(--leaf)';
-      form.reset();
-    } else { throw new Error(); }
-  } catch {
-    status.textContent = '✗ Could not send — please email directly.';
-    status.style.borderLeftColor = '#c84a3a';
-  }
-  status.style.display = 'block';
-  btn.textContent = 'Send Message';
-  btn.disabled = false;
-});
-
-/* NAV SCROLL HIGHLIGHT */
-const sects  = document.querySelectorAll('section[id]');
-const nLinks = document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll', () => {
-  let cur = '';
-  sects.forEach(s => { if (window.scrollY >= s.offsetTop - 220) cur = s.id; });
-  nLinks.forEach(a => {
-    a.style.color = (a.getAttribute('href') === '#' + cur) ? 'var(--dew)' : '';
-  });
-}, {passive: true});
 </script>
 </body>
 </html>
